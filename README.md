@@ -1,7 +1,8 @@
 # Audio2PianoRoll
 
-## Project Overview
-**Audio2PianoRoll** is a deep learning-based approach for **Automatic Music Transcription (AMT)** that converts isolated guitar audio into a **Piano Roll** representation, which can then be transformed into MIDI format and Sheet music. This project leverages **Constant-Q Transform (CQT)** as an input representation and employs a **U-Net architecture** for transcription.
+> **Audio2PianoRoll** is a deep learning-based approach for **Automatic Music Transcription (AMT)** that converts isolated guitar audio into a **Piano Roll** representation, which can then be transformed into MIDI format and Sheet music. This project leverages **Constant-Q Transform (CQT)** as an input representation and employs a **U-Net architecture** for transcription.
+
+![Guitar Audio File transformed into CQT and fed into U-Net model to generate final Piano Roll](pipeline.png)
 
 ## Motivation
 - **Limited research** on guitar transcription compared to piano.
