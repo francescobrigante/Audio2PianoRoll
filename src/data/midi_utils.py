@@ -114,7 +114,7 @@ def jams_to_pianoroll(jam, num_time_bins, sr=22050, hop_length=512, min_midi=36,
     return piano_roll, time_axis, midi_pitches
 
 
-def plot_piano_roll(piano_roll, time_axis, midi_pitches):
+def plot_piano_roll(piano_roll, time_axis, midi_pitches, show=True):
     """
     Plots a piano roll representation.
 
@@ -122,6 +122,7 @@ def plot_piano_roll(piano_roll, time_axis, midi_pitches):
     - piano_roll (numpy.ndarray): Binary matrix of shape (num_pitches, num_time_bins).
     - time_axis (numpy.ndarray): Time in seconds corresponding to each time bin.
     - midi_pitches (numpy.ndarray): Array of included MIDI pitches.
+    - show (bool): display the figure (set False when saving it from a script).
     """
     plt.figure(figsize=(12, 6))
     plt.imshow(piano_roll, aspect='auto', cmap='Greys', origin='lower',
@@ -131,4 +132,5 @@ def plot_piano_roll(piano_roll, time_axis, midi_pitches):
     plt.xlabel("Time (seconds)")
     plt.ylabel("MIDI Pitch")
     plt.title("Piano Roll Visualization")
-    plt.show()
+    if show:
+        plt.show()

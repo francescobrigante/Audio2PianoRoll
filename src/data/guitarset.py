@@ -81,16 +81,7 @@ class GuitarSetDataset(data.Dataset):
         return CQT_nmf
 
     def _load_audio(self, file_path):
-        audio, _ = librosa.load(file_path, sr=SR)
-        CQT = librosa.cqt(audio, sr=SR, fmin=FMIN, bins_per_octave=BINS_PER_OCTAVE, n_bins=N_BINS)
-
-        # logarithmic scaling + min-max normalization
-        CQT_dB = librosa.amplitude_to_db(np.abs(CQT), ref=np.max)
-        CQT_norm = (CQT_dB - CQT_dB.min()) / (CQT_dB.max() - CQT_dB.min())
-
-        if self.apply_nmf:
-            CQT_norm = self.nmf(CQT_norm)
-        return CQT_norm.astype(np.float32)
+        return load_cqt(file_path, apply_nmf=self.apply_nmf)
 
     def _load_jams(self, file_path, num_time_bins):
         import jams
@@ -116,6 +107,20 @@ class GuitarSetDataset(data.Dataset):
             return cqt_sections, piano_roll_sections, num_time_bins
         else:
             return cqt_tensor, piano_roll_tensor
+
+
+def load_cqt(file_path, apply_nmf=False):
+    """Audio file → normalized CQT (156, T), the model's input representation."""
+    audio, _ = librosa.load(file_path, sr=SR)
+    CQT = librosa.cqt(audio, sr=SR, fmin=FMIN, bins_per_octave=BINS_PER_OCTAVE, n_bins=N_BINS)
+
+    # logarithmic scaling + min-max normalization
+    CQT_dB = librosa.amplitude_to_db(np.abs(CQT), ref=np.max)
+    CQT_norm = (CQT_dB - CQT_dB.min()) / (CQT_dB.max() - CQT_dB.min())
+
+    if apply_nmf:
+        CQT_norm = GuitarSetDataset.nmf(CQT_norm)
+    return CQT_norm.astype(np.float32)
 
 
 # ------------------------------------------------------------------ windowing

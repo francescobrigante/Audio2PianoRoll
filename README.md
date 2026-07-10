@@ -45,7 +45,8 @@ The project utilizes **GuitarSet**, which consists of:
 │       └── midi_utils.py             # JAMS/MIDI → piano roll conversion
 ├── scripts/
 │   ├── train.py                      # CLI training entry point
-│   └── evaluate.py                   # CLI evaluation entry point
+│   ├── evaluate.py                   # CLI evaluation entry point
+│   └── transcribe.py                 # CLI inference: audio file → piano roll (.npy + plot)
 ├── notebooks/
 │   └── results_showcase.ipynb        # Training record and evaluation results with plots
 ├── test_split.json                   # Persisted test split (portable file basenames)
@@ -64,6 +65,9 @@ export GUITARSET_DIR=/path/to/guitarset
 python scripts/train.py                                    # train (144 epochs by default)
 python scripts/evaluate.py --checkpoint models/final144.pth  # evaluate on the saved test split
 python scripts/evaluate.py --full-roll                     # evaluate on reconstructed full rolls
+
+# transcribe any guitar recording into a piano roll (.npy + .png)
+python scripts/transcribe.py my_recording.wav --threshold 0.15
 ```
 
 **Trained weights:** `models/final144.pth` is distributed via [GitHub Releases](../../releases) — download it into `models/` to skip training.
@@ -83,9 +87,6 @@ python scripts/evaluate.py --full-roll                     # evaluate on reconst
 - **Enhancing post-processing for cleaner predictions.**
 - **Experimenting with different model parameters** (e.g., window overlap size).
 - **Improving transcription quality using advanced techniques.**
-
-## License
-This project is licensed under the MIT License.
 
 ## Author
 **Francesco Brigante** - Computer Science student, Sapienza Università di Roma

@@ -16,6 +16,8 @@ BINS_PER_SEMITONE = 3
 BINS_PER_OCTAVE = 36                  # 3*12 = 36
 N_BINS = BINS_PER_SEMITONE * N_NOTES  # 3*52 = 156
 FMIN = librosa.midi_to_hz(36)         # MIDI 36 = C2
+HOP_LENGTH = 512                      # librosa.cqt default, also used to discretize JAMS annotations
+HOP_LENGTH_SECONDS = HOP_LENGTH / SR
 
 # piano roll (MIDI range C2–E6)
 MIN_MIDI = 36
