@@ -32,17 +32,41 @@ The project utilizes **GuitarSet**, which consists of:
 3. **Model Training:** Binary Cross-Entropy (BCE) and Mean Squared Error (MSE) losses.
 4. **Output:** Predicted piano roll sections reconstructed into full transcription.
 
-## File Structure
+## Repository Structure
 ```
-├── models/
-│   ├── final144.pth  # Final trained model weights
-│
-├── cqtUnet.py        # CQT-style U-Net architecture implementation
-├── dataloader.py     # Dataloader for single dataset (360 songs)
-├── fulldataloader.py # Dataloader for all 4 datasets (360 * 4 songs)
-├── evaluate.py       # Evaluation functions
-├── train.ipynb       # Notebook for training and evaluating the model
+├── src/
+│   ├── config.py                     # Signal-processing constants, dataset location resolution
+│   ├── model.py                      # CQT U-Net architecture (with tensor shape comments)
+│   ├── losses.py                     # Combined BCE + MSE loss
+│   ├── training.py                   # Training loop with per-track gradient accumulation
+│   ├── evaluation.py                 # Inference, precision/recall/F1, piano roll plots
+│   └── data/
+│       ├── guitarset.py              # GuitarSet dataset, windowing, overlap reconstruction, split
+│       └── midi_utils.py             # JAMS/MIDI → piano roll conversion
+├── scripts/
+│   ├── train.py                      # CLI training entry point
+│   └── evaluate.py                   # CLI evaluation entry point
+├── notebooks/
+│   └── results_showcase.ipynb        # Training record and evaluation results with plots
+├── test_split.json                   # Persisted test split (portable file basenames)
+└── Audio2PianoRoll.pdf               # Project report
 ```
+
+## Quick Start
+
+```bash
+pip install -r requirements.txt
+
+# download GuitarSet (audio + annotations) from https://guitarset.weebly.com/
+# and point the code to it:
+export GUITARSET_DIR=/path/to/guitarset
+
+python scripts/train.py                                    # train (144 epochs by default)
+python scripts/evaluate.py --checkpoint models/final144.pth  # evaluate on the saved test split
+python scripts/evaluate.py --full-roll                     # evaluate on reconstructed full rolls
+```
+
+**Trained weights:** `models/final144.pth` is distributed via [GitHub Releases](../../releases) — download it into `models/` to skip training.
 
 ## Training Details
 - **Weight Initialization:** He initialization for convolutional layers, Xavier for fully connected layers.
