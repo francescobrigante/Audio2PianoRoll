@@ -1,15 +1,16 @@
-import pretty_midi
-import numpy as np
-from music21 import converter, environment
-import IPython.display as ipd
-import librosa
-import pathlib
+# ==============================================================================
+# MIDI / JAMS → piano roll conversion and piano roll plotting.
+# jams_to_pianoroll discretizes note annotations onto a fixed time grid
+# aligned with the CQT hop length.
+# ==============================================================================
+
 import matplotlib.pyplot as plt
-import jams
-import matplotlib.lines as mlines
+import numpy as np
 
 def midi_to_pianoroll(midi, midi_path=None, fs=100):
     '''converts a midi file to a piano roll '''
+    import pretty_midi  # imported lazily: not needed for the JAMS pipeline
+
     if midi_path:
         midi = pretty_midi.PrettyMIDI(midi_path)
         
@@ -23,10 +24,12 @@ def midi_to_pianoroll(midi, midi_path=None, fs=100):
 
 def play_midi(midi, midi_path=None, fs=44100):
     '''plays a midi file and returns its audio'''
-    
+    import IPython.display as ipd  # imported lazily: only needed in notebooks
+    import pretty_midi
+
     if midi_path:
         midi = pretty_midi.PrettyMIDI(midi_path)
-        
+
     audio = midi.synthesize(fs=fs)
     ipd.Audio(audio, rate=fs)
     return audio

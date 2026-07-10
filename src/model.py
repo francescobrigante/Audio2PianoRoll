@@ -1,13 +1,13 @@
+# ==============================================================================
+# U-Net that maps a CQT spectrogram section (1, 156, 86) to a piano roll
+# section (53, 86): 4 encoder/decoder levels with skip connections, then a
+# grouped convolution collapsing the frequency axis into MIDI activations.
+# ==============================================================================
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchvision.transforms.functional import center_crop
 import torch.nn.init as init
-
-# Ensure spatial size match by cropping
-def crop_to_match(tensor, target_size):
-    _, _, H, W = target_size.shape  # Target height & width
-    return center_crop(tensor, (H, W))  # Apply cropping
 
 def pad_to_match(tensor, target_size):
     _, _, H, W = target_size.shape  # Target height & width

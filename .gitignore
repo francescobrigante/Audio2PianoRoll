@@ -1,0 +1,11 @@
+# large artifacts distributed via GitHub Releases
+models/*.pth
+test_samples.pkl
+
+# python
+__pycache__/
+*.pyc
+
+# misc
+.DS_Store
+loss*.png

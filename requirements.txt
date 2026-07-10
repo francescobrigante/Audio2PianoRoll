@@ -1,0 +1,8 @@
+torch
+librosa
+numpy
+scikit-learn
+matplotlib
+tqdm
+jams
+pretty_midi
